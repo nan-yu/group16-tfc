@@ -13,7 +13,7 @@ provider "aws" {
   version = ">= 2.28.1"
   region  = var.aws_region
   assume_role {
-    role_arn = "arn:aws:iam::503249568911:role/nmckinley-terraform"
+    role_arn = "arn:aws:iam::503249568911:role/group16-terraform"
   }
 }
 

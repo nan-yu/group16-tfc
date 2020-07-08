@@ -14,15 +14,15 @@ variable "team_id" {
 }
 variable "prod_cluster_name" {
   type    = string
-  default = "nmckinley-prod"
+  default = "group16-prod"
 }
 
 variable "test_cluster_name" {
   type    = string
-  default = "nmckinley-test"
+  default = "group16-test"
 }
 
 variable "dev_cluster_name" {
   type    = string
-  default = "nmckinley-dev"
+  default = "group16-dev"
 }

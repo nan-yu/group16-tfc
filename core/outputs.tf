@@ -1,3 +1,3 @@
 output "eks_output" {
-  value = aws_eks_cluster.nmckinley["prod"].id
+  value = aws_eks_cluster.group16["dev"].id
 }

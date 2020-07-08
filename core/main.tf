@@ -13,7 +13,7 @@ provider "aws" {
   version = ">= 2.28.1"
   region  = var.aws_region
   assume_role {
-    role_arn = "arn:aws:iam::503249568911:role/nmckinley-terraform"
+    role_arn = "arn:aws:iam::503249568911:role/group16-terraform"
   }
 }
 
@@ -97,7 +97,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.6.0"
 
-  name                 = "nmckinley-vpc"
+  name                 = "group16-vpc"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   private_subnets      = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
@@ -117,8 +117,8 @@ module "vpc" {
   }
 }
 
-resource "aws_iam_role" "nmckinley" {
-  name = "eks-cluster-nmckinley"
+resource "aws_iam_role" "group16" {
+  name = "eks-cluster-group16"
 
   assume_role_policy = <<POLICY
 {
@@ -136,20 +136,20 @@ resource "aws_iam_role" "nmckinley" {
 POLICY
 }
 
-resource "aws_iam_role_policy_attachment" "nmckinley-AmazonEKSClusterPolicy" {
+resource "aws_iam_role_policy_attachment" "group16-AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.nmckinley.name
+  role       = aws_iam_role.group16.name
 }
 
-resource "aws_iam_role_policy_attachment" "nmckinley-AmazonEKSServicePolicy" {
+resource "aws_iam_role_policy_attachment" "group16-AmazonEKSServicePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = aws_iam_role.nmckinley.name
+  role       = aws_iam_role.group16.name
 }
 
-resource "aws_eks_cluster" "nmckinley" {
+resource "aws_eks_cluster" "group16-fork" {
   for_each = toset(["prod", "test", "dev"])
-  name     = "nmckinley-${each.value}"
-  role_arn = aws_iam_role.nmckinley.arn
+  name     = "group16-${each.value}"
+  role_arn = aws_iam_role.group16.arn
 
   vpc_config {
     subnet_ids = module.vpc.private_subnets
@@ -158,8 +158,8 @@ resource "aws_eks_cluster" "nmckinley" {
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
   # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
   depends_on = [
-    aws_iam_role_policy_attachment.nmckinley-AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.nmckinley-AmazonEKSServicePolicy,
+    aws_iam_role_policy_attachment.group16-AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.group16-AmazonEKSServicePolicy,
   ]
 }
 
